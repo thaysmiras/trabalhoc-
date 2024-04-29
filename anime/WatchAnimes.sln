@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchAnimes", "WatchAnimes\WatchAnimes.csproj", "{53796ECA-4E79-472B-803E-E7C3C4576726}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53796ECA-4E79-472B-803E-E7C3C4576726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53796ECA-4E79-472B-803E-E7C3C4576726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53796ECA-4E79-472B-803E-E7C3C4576726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53796ECA-4E79-472B-803E-E7C3C4576726}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
