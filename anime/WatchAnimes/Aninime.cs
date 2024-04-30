@@ -74,7 +74,7 @@ class Aninime
             return Results.Ok(updatedAnime);
         }).Produces<Anime>();
 
-        app.MapPut("/animes/{id}", (AppDbContext context, string id, Anime updatedAnime) => {
+        app.MapPut("/animes/{id}", (AppDbContext context, Guid id, Anime updatedAnime) => {
             var existingAnime = context.Animes.Find(id);
             if (existingAnime == null) {
                 return Results.NotFound("Anime não encontrado.");
@@ -84,9 +84,9 @@ class Aninime
             context.Animes.Remove(existingAnime);
             context.SaveChanges();
 
-            // Criar um novo anime com os valores atualizados e o mesmo ID
+            // Criar um novo anime com os valores atualizados
             var newAnime = new Anime(
-                existingAnime.Id,
+                id,
                 updatedAnime.Name,
                 updatedAnime.gender,
                 updatedAnime.premium,
@@ -100,6 +100,8 @@ class Aninime
 
             return Results.Ok(newAnime);
         }).Produces<Anime>();
+
+
 
 
 
