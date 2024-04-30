@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WatchAnimes")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+86c20bbcc4dcee0e2d5f2ec6aa6f20f22204eb50")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f9e6242a44c8a6401f442b5434871eb535bdb23")]
 [assembly: System.Reflection.AssemblyProductAttribute("WatchAnimes")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WatchAnimes")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

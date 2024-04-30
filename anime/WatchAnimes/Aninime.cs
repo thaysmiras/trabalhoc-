@@ -55,7 +55,7 @@ class Aninime
 
 
         app.MapPost("/animes", (AppDbContext context, Anime anime) =>{
-    
+
             context.Animes.Add(anime);
             context.SaveChanges();
             return Results.Created($"/animes/{anime.Id}", anime);
@@ -103,7 +103,9 @@ class Aninime
 
 
         app.MapDelete("/animes/{id}", (AppDbContext context, string id) => {
-            var anime = context.Animes.Find(id);
+            var guidId = Guid.Parse(id);
+            
+            var anime = context.Animes.Find(guidId);
             if (anime == null) {
                 return Results.NotFound("Anime não encontrado.");
             }
@@ -111,7 +113,6 @@ class Aninime
             context.SaveChanges();
             return Results.Ok();
         }).Produces<Anime>();
-
 
         app.Run();
     }
