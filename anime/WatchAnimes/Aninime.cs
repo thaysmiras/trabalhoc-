@@ -1,4 +1,3 @@
-
 using Animes.Data;
 using NSwag.AspNetCore;
 using Videos.Models;
@@ -32,8 +31,6 @@ class Aninime
             });
         }
 
-
-        	
         app.MapGet("/animes", (AppDbContext context) =>
         {
         var videos = context.Animes;
@@ -41,12 +38,7 @@ class Aninime
             : Results.NotFound();
         }).Produces<Anime>();
 
-        app.MapGet("/animes/{id}", (HttpContext httpContext) => {
-            var id = httpContext.Request.RouteValues["id"]?.ToString();
-            if (id == null) {
-                return Results.NotFound();
-            }
-            
+        app.MapGet("/animes/{id}", (AppDbContext context, Guid id) => {
             var anime = context.Animes.Find(id);
             if (anime != null) {
                 return Results.Ok(anime);
@@ -54,18 +46,12 @@ class Aninime
             else {
                 return Results.NotFound();
             }
-        }).Produces <Anime>();
+        }).Produces<Anime>();
 
-
-
-        app.MapPost("/animes/batch", (AppDbContext context, List
-            Anime> newAnimes) => {
-                context.Animes.AddRange(newAnimes);
-                context.SaveChanges();
-                return Results.Created($"/animes", newAnimes);
-            }).Produces<Anime>();
-
-
+        app.MapGet("/animes/premium", (AppDbContext context) => {
+            var premiumAnimes = context.Animes.Where(anime => anime.premium);
+            return Results.Ok(premiumAnimes);
+        }).Produces<Anime>();
 
 
         app.MapPost("/animes", (AppDbContext context, Anime anime) =>{
@@ -75,31 +61,47 @@ class Aninime
             return Results.Created($"/animes/{anime.Id}", anime);
         }).Produces<Anime>();
 
-        app.MapPatch("/animes/{id}/premium", ( Guid id, bool isPremium) => {
+        app.MapPatch("/animes/{id}/premium", ( AppDbContext context, Guid id, bool isPremium) => {
             var anime = context.Animes.Find(id);
             if (anime == null) {
                 return Results.NotFound("Anime não encontrado.");
             }
             
-            var updatedAnime = anime with { IsPremium = isPremium };
+            var updatedAnime = anime with { premium = isPremium };
             context.Entry(anime).CurrentValues.SetValues(updatedAnime);
             context.SaveChanges();
             
             return Results.Ok(updatedAnime);
-        }).Produces<Anime>().WithName("UpdateAnimePremiumStatus");
+        }).Produces<Anime>();
 
         app.MapPut("/animes/{id}", (AppDbContext context, string id, Anime updatedAnime) => {
             var existingAnime = context.Animes.Find(id);
             if (existingAnime == null) {
                 return Results.NotFound("Anime não encontrado.");
             }
-            existingAnime.Title = updatedAnime.Title;
-            existingAnime.Description = updatedAnime.Description;
-            existingAnime.ReleaseDate = updatedAnime.ReleaseDate;
-            existingAnime.IsPremium = updatedAnime.IsPremium;
+
+            // Remover o anime existente
+            context.Animes.Remove(existingAnime);
             context.SaveChanges();
-            return Results.Ok(existingAnime);
-        }).Produces
+
+            // Criar um novo anime com os valores atualizados e o mesmo ID
+            var newAnime = new Anime(
+                existingAnime.Id,
+                updatedAnime.Name,
+                updatedAnime.gender,
+                updatedAnime.premium,
+                updatedAnime.classification,
+                updatedAnime.ultimoep
+            );
+
+            // Adicionar o novo anime ao contexto
+            context.Animes.Add(newAnime);
+            context.SaveChanges();
+
+            return Results.Ok(newAnime);
+        }).Produces<Anime>();
+
+
 
         app.MapDelete("/animes/{id}", (AppDbContext context, string id) => {
             var anime = context.Animes.Find(id);
@@ -109,7 +111,7 @@ class Aninime
             context.Animes.Remove(anime);
             context.SaveChanges();
             return Results.Ok();
-        }).Produces(HttpStatusCode.OK, HttpStatusCode.NotFound);
+        }).Produces<Anime>();
 
 
         app.Run();
