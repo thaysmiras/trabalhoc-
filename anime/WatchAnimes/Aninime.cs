@@ -80,11 +80,9 @@ class Aninime
                 return Results.NotFound("Anime não encontrado.");
             }
 
-            // Remover o anime existente
             context.Animes.Remove(existingAnime);
             context.SaveChanges();
 
-            // Criar um novo anime com os valores atualizados
             var newAnime = new Anime(
                 id,
                 updatedAnime.Name,
@@ -94,7 +92,6 @@ class Aninime
                 updatedAnime.ultimoep
             );
 
-            // Adicionar o novo anime ao contexto
             context.Animes.Add(newAnime);
             context.SaveChanges();
 
